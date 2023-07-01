@@ -1,10 +1,15 @@
 const express = require('express');
+const db = require('./models/db');
+const userRoutes = require('./routes/user_routes');
+
+
 const index = express();
 
-const db = require('./models/db');
+index.use(express.json());
+index.use('/routes', userRoutes);
 
 index.get("/", async (req,res) => {
-  res.send("Server started!");
+  res.send("API para cadastro, atualização, listage e remoção de usuários ativa");
 });
 
 index.listen(8000, () => {
