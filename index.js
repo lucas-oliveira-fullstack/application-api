@@ -1,13 +1,12 @@
 const express = require('express');
+const index = express();
 
-express();
+const db = require('./models/db');
 
-const  app = express();
-
-app.get("/", async (req, res) => {
-    res.send("Página inicial")
+index.get("/", async (req,res) => {
+  res.send("Server started!");
 });
 
-app.listen(8081, () => {
-    console.log("Servidor iniciado na porta 8080: http://localhotst:8081");
+index.listen(8000, () => {
+  console.log("Server started on port 8000: http://localhots:8000");
 });

@@ -10,14 +10,16 @@
     "type": "git",
     "url": "git+https://github.com/lucas-oliveira-fullstack/marketplace-back.git"
   },
-  "author": "",
+  "author": "Lucas Oliveira",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/lucas-oliveira-fullstack/marketplace-back/issues"
   },
   "homepage": "https://github.com/lucas-oliveira-fullstack/marketplace-back#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mysql2": "^3.4.3",
+    "sequelize": "^6.32.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
