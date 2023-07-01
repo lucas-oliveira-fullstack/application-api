@@ -1,0 +1,25 @@
+{
+  "name": "marketplace-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucas-oliveira-fullstack/marketplace-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucas-oliveira-fullstack/marketplace-back/issues"
+  },
+  "homepage": "https://github.com/lucas-oliveira-fullstack/marketplace-back#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
