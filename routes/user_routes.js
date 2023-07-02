@@ -11,7 +11,7 @@ router.post('/models/user', async (req, res) => {
         res.json(user);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Errao ao criar usuário'});
+        res.status(500).json({ error: 'Erro ao criar usuário'});
     }
 });
 
