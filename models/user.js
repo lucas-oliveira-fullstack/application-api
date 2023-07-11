@@ -3,6 +3,7 @@ const sequelize = require('./db');
 
 const User = sequelize.define('User', {
     id: {
+        autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
         allowNull: false
@@ -29,6 +30,10 @@ const User = sequelize.define('User', {
     },
     age: {
         type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    gender: {
+        type: DataTypes.TINYINT,
         allowNull: false
     },
     photo: {

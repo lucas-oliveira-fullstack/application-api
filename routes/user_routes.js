@@ -1,18 +1,19 @@
 const express = require('express');
 const User = require('../models/user.js');
-
 const router = express.Router();
 
 // User Register
-router.post('/models/user', async (req, res) => {
+router.post('/models/user/register', async (req, res) => {
   try {
     const {
       id,
       CPF,
+      mail,
       name,
       cell_phone,
       birth_date,
       age,
+      gender,
       photo,
       postal_code,
       street_name,
@@ -27,10 +28,12 @@ router.post('/models/user', async (req, res) => {
     const user = await User.create({
       id,
       CPF,
+      mail,
       name,
       cell_phone,
       birth_date,
       age,
+      gender,
       photo,
       postal_code,
       street_name,
@@ -50,7 +53,7 @@ router.post('/models/user', async (req, res) => {
 });
 
 // Show all Users
-router.get('/models/user', async (req, res) => {
+router.get('/models/user/users', async (req, res) => {
   try {
     const users = await User.findAll();
     res.json(users);
@@ -77,7 +80,7 @@ router.get('/models/user/:id', async (req, res) => {
 });
 
 // Update User by ID
-router.put('/models/user/:id', async (req, res) => {
+router.put('/models/user/update/:id', async (req, res) => {
   try {
     const userId = req.params.id;
     const { name, birth_date, cell_phone, password_18 } = req.body;
@@ -99,7 +102,7 @@ router.put('/models/user/:id', async (req, res) => {
 });
 
 // Delete User by ID
-router.delete('/models/user/:id', async (req, res) => {
+router.delete('/models/user/delete/:id', async (req, res) => {
   try {
     const userId = req.params.id;
     const deletedRowCount = await User.destroy({ where: { id: userId } });
