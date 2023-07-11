@@ -1,5 +1,5 @@
 const express = require('express');
-const Pharmacy = require('../models/pharmacy.js');
+const Pharmacy = require('../models/Pharmacies');
 
 const router = express.Router();
 

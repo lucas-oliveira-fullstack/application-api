@@ -1,9 +1,9 @@
-const express = require('express');
-const User = require('../models/user.js');
+const express = require('express')
+const User = require('../models/Users');
 const router = express.Router();
 
 // User Register
-router.post('/models/user/register', async (req, res) => {
+router.post('/models/user/create', async (req, res) => {
   try {
     const {
       id,
@@ -53,7 +53,7 @@ router.post('/models/user/register', async (req, res) => {
 });
 
 // Show all Users
-router.get('/models/user/users', async (req, res) => {
+router.get('/models/user/list', async (req, res) => {
   try {
     const users = await User.findAll();
     res.json(users);

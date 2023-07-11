@@ -1,23 +1,21 @@
-const express = require('express');
-const path = require('path');
+const express = require('express')
+const { engine: handlebarsEngine } = require('express-handlebars')
 
-const app = express();
-const port = 8000;
-const basePath = path.join(__dirname, 'templates')
-const usersRoutes = require('./routes/user_routes.js')
+const app = express()
 
-app.use(express.json());
+const conn = require('./db/conn')
 
-app.use('/users', usersRoutes)
+app.engine('handlebars', handlebarsEngine());
+app.set('view engine', 'handlebars')
 
-app.get("/", (req, res) => {
-  res.send("API para cadastro, atualização, listagem e remoção de usuário");
-})
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+)
 
-app.use(function (req, res, next) {
-  res.status(404).sendFile(basePath, '/404.html')
-})
+app.use(express.json())
 
-app.listen(port, () => {
-  console.log(`Server started on port ${port}: http://localhost:${port}`);
-});
+app.use(express.static('public'))
+
+app.listen(8000)

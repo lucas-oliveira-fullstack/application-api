@@ -5,20 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./index.js"
+    "start": "nodemon ./index.js localhost 8000"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lucas-oliveira-fullstack/marketplace-back.git"
   },
   "author": "Lucas Oliveira",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/lucas-oliveira-fullstack/marketplace-back/issues"
   },
   "homepage": "https://github.com/lucas-oliveira-fullstack/marketplace-back#readme",
   "dependencies": {
     "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
     "inquire": "^0.4.8",
     "loadash": "^1.0.0",
     "minimist": "^1.2.8",
