@@ -5,14 +5,11 @@ const app = express()
 
 const conn = require('./db/conn')
 
+//Models
 const User = require('./models/Users')
-const UserRules = require('./models/UserRules')
-const Market = require('./models/Markets')
-const AutoParts = require('./models/AutoParts')
-const Pharmacies = require('./models/Pharmacies')
-const Products = require('./models/Products')
-const Categories = require('./models/Categories')
-const SubCategories = require('./models/Subcategories')
+
+//Router
+const usersRoutes = require('./routes/usersRoutes')
 
 app.engine('handlebars', handlebarsEngine())
 app.set('view engine', 'handlebars')
@@ -26,6 +23,12 @@ app.use(
 app.use(express.json())
 
 app.use(express.static('public'))
+
+app.get('/', function(req, res) {
+  res.render('home')
+})
+
+app.use('/users', usersRoutes)
 
 conn
 .sync()

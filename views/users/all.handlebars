@@ -1,0 +1,12 @@
+<h1>Usuários</h1>
+<p><a href="/users/create">Cadastar</a></p>
+
+<ul class="user-list">
+    {{#each users}}
+        <li>
+            <a href="/usersDatail" class="title">{{this.title}}</a>
+        </li>
+    {{/each}}
+</ul>
+</br>
+<p><a href="/">Voltar</a></p>
