@@ -1,36 +1,36 @@
-const { Sequelize, DataType, DataTypes } = require('sequelize')
+const { Sequelize, DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const Products = sequelize.define('Product', {
+const Subcategories = require('./Subcategories')
+
+const Products = sequelize.define('Products', {
     id: {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
-    photo: {
-        type: DataTypes.BLOB,
-        required: false
-    },
     name: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     brand: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     description: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     weight: {
         type: DataTypes.STRING,
-        required: false
+        allowNull: true
     },
-    agegroupadults: {
+    adults_product: {
         type: DataTypes.TINYINT,
-        required: true
+        allowNull: false
     }
 })
+
+Products.belongsTo(Subcategories, { foreignKey: 'subcategoriesID', allowNull: false })
 
 module.exports = Products

@@ -1,71 +1,72 @@
-const { Sequelize, DataType, DataTypes } = require('sequelize')
+const { Sequelize, DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const User = sequelize.define('User', {
+const Users = sequelize.define('Users', {
     id: {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
-    CPF: {
+    cpf: {
         type: DataTypes.STRING,
-        required: false
+        allowNull: true
     },
     mail: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     name: {
         type: DataTypes.TEXT,
-        required: true
+        allowNull: false
     },
     cell_phone: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     birth_date: {
         type: DataTypes.DATEONLY,
-        required: true
+        allowNull: false
     },
     age: {
         type: DataTypes.INTEGER,
-        required: true
+        allowNull: false
     },
     gender: {
         type: DataTypes.TINYINT,
-        required: true
+        allowNull: false
     },
     photo: {
         type: DataTypes.BLOB,
-        required: false
+        allowNull: true
     },
     postal_code: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     street_name: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     house_number: {
-        type: DataTypes.STRING,
-        required: true
+        type: DataTypes.INTEGER,
+        allowNull: false
     },
     complement: {
         type: DataTypes.STRING,
-        required: false
+        allowNull: true
     },
     neighborhood: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     city: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     state: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     }
 })
-module.exports = User
+
+module.exports = Users

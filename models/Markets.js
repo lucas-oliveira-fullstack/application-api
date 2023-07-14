@@ -1,76 +1,68 @@
-const { Sequelize, DataType, DataTypes } = require('sequelize');
-const sequelize = require('../db/conn');
+const { Sequelize, DataTypes } = require('sequelize')
+const sequelize = require('../db/conn')
 
-const Market = sequelize.define('Market', {
+const PaymentMethods = require('./PaymentMethods')
+
+const Markets = sequelize.define('Markets', {
     id: {
         primaryKey: true,
         type: DataTypes.INTEGER,
-        allowNull: true
+        required: true
     },
     logo: {
         type: DataTypes.BLOB,
-        allowNull: true
+        required: false
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        required: true
     },
     phone_number: {
         type: DataTypes.STRING,
-        allowNull: false
+        required: true
     },
-    open_monday_friday: {
-        type: DataTypes.TIME,
-        allowNull: false
+    open_close_monday_friday: {
+        type: DataTypes.STRING,
+        required: true
     },
-    close_monday_friday: {
-        type: DataTypes.TIME,
-        allowNull: false
+    open_close_saturday: {
+        type: DataTypes.STRING,
+        required: true
     },
-    open_saturday: {
-        type: DataTypes.TIME,
-        allowNull: true
-    },
-    close_saturday: {
-        type: DataTypes.TIME,
-        allowNull: true
-    },
-    open_sunday_holiday: {
-        type: DataTypes.TIME,
-        allowNull: true
-    },
-    close_sunday_holiday: {
-        type: DataTypes.TIME,
+    open_close_sunday_holiday: {
+        type: DataTypes.STRING,
         allowNull: true
     },
     postal_code: {
         type: DataTypes.STRING,
-        allowNull: false
+        required: true
     },
     street_name: {
         type: DataTypes.STRING,
-        allowNull: false
+        required: true
     },
-    house_number: {
+    store_number: {
         type: DataTypes.STRING,
-        allowNull: false
+        required: true
     },
     complement: {
         type: DataTypes.STRING,
-        allowNull: true
+        required: false
     },
     neighborhood: {
         type: DataTypes.STRING,
-        allowNull: false
+        required: true
     },
     city: {
         type: DataTypes.STRING,
-        allowNull: false
+        required: true
     },
     state: {
         type: DataTypes.STRING,
-        allowNull: false
+        required: true
     }
-});
+})
 
-module.exports = Market;
+Markets.belongsTo(PaymentMethods, { foreignKey: 'paymentmethodsID', allowNull: false })
+
+module.exports = Markets

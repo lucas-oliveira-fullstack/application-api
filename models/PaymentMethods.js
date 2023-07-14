@@ -1,21 +1,19 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const {Sequelize, DataTypes} = require('sequelize')
 const sequelize = require('../db/conn')
 
-
-const Categories = sequelize.define('Categories', {
+const PaymentMethods = sequelize.define('PaymentMethods', {
     id: {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
     },
-    photo: {
+    method_icon: {
         type: DataTypes.BLOB,
         allowNull: true
     },
-    name: {
+    method_name: {
         type: DataTypes.STRING,
         allowNull: false
     }
 })
-
-module.exports = Categories
+module.exports = PaymentMethods

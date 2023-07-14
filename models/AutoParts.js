@@ -1,11 +1,12 @@
-const { Sequelize, DataType, DataTypes } = require('sequelize');
-const sequelize = require('../db/conn');
+const { Sequelize, DataTypes } = require('sequelize')
+const sequelize = require('../db/conn')
+
+const PaymentMethods = require('./PaymentMethods')
 
 const AutoParts = sequelize.define('AutoParts', {
     id: {
         primaryKey: true,
         type: DataTypes.INTEGER,
-        allowNull: true
     },
     logo: {
         type: DataTypes.BLOB,
@@ -13,34 +14,22 @@ const AutoParts = sequelize.define('AutoParts', {
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     phone_number: {
         type: DataTypes.STRING,
-        allowNull: false
-    },
-    open_monday_friday: {
-        type: DataTypes.TIME,
-        allowNull: false
-    },
-    close_monday_friday: {
-        type: DataTypes.TIME,
-        allowNull: false
-    },
-    open_saturday: {
-        type: DataTypes.TIME,
         allowNull: true
     },
-    close_saturday: {
-        type: DataTypes.TIME,
+    open_close_monday_friday: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    open_close_saturday: {
+        type: DataTypes.STRING,
         allowNull: true
     },
-    open_sunday_holiday: {
-        type: DataTypes.TIME,
-        allowNull: true
-    },
-    close_sunday_holiday: {
-        type: DataTypes.TIME,
+    open_close_sunday_holiday: {
+        type: DataTypes.STRING,
         allowNull: true
     },
     postal_code: {
@@ -51,8 +40,8 @@ const AutoParts = sequelize.define('AutoParts', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    house_number: {
-        type: DataTypes.STRING,
+    store_number: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     complement: {
@@ -71,6 +60,8 @@ const AutoParts = sequelize.define('AutoParts', {
         type: DataTypes.STRING,
         allowNull: false
     }
-});
+})
 
-module.exports = AutoParts;
+AutoParts.belongsTo(PaymentMethods, { foreignKey: 'paymentmethodsID', allowNull: false })
+
+module.exports = AutoParts
