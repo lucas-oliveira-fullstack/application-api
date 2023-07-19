@@ -66,6 +66,10 @@ const Users = sequelize.define('Users', {
     state: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    password_18: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 })
 

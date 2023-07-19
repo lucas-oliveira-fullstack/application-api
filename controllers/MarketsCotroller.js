@@ -27,7 +27,8 @@ module.exports = class MarketController {
             complement: req.body.complement,
             neighborhood: req.body.neighborhood,
             city: req.body.city,
-            state: req.body.state
+            state: req.body.state,
+            paymentmethodsID: req.body.paymentmethodsID
         }
 
         await Market.create(market)
