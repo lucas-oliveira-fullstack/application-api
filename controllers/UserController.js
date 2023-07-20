@@ -15,7 +15,7 @@ module.exports = class UserCotroller {
     static async createUserSave(req,res) {
 
         const user = {
-            CPF: req.body.CPF,
+            cpf: req.body.cpf,
             mail: req.body.mail,
             name: req.body.name,
             cell_phone: req.body.cell_phone,

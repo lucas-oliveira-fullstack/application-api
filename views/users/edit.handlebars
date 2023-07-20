@@ -1,0 +1,24 @@
+<nav>
+    <h2>Editando o usuário: {{user.name}}</h2>
+
+    <p><a href="/users">Voltar</a></p>
+</nav>
+
+<form action="/users/edit" method="post">
+    <div class="form-control">
+        <label for="name">Nome completo:</label>
+        <input type="text" name="name" placeholder="Nome completo" value="{{user.name}}">
+    </div>
+    <div class="form-control">
+        <label for="birth_date">Data de nascimento:</label>
+        <input type="date" name="birth_date" placeholder="Data de nascimento" value="{{user.birth_date}}">
+    </div>
+    <div class="form-control">
+        <label for="cell_phone">Celular:</label>
+        <input type="text" name="cell_phone" placeholder="Celular" value="{{user.cell_phone}}">
+    </div>
+    <div class="form-control">
+        <label for="password_18">Senha 18+:</label>
+        <input type="text" name="password_18" placeholder="Senha 18+" value="{{user.password_18}}">
+    </div>
+</form>

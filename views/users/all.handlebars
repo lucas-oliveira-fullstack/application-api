@@ -1,12 +1,48 @@
-<h1>Usuários</h1>
-<p><a href="/users/create">Cadastar</a></p>
+<nav>
+    <h2>Usuários</h2>
 
-<ul class="user-list">
+    <p><a href="/">Voltar</a></p>
+
+    <p><a href="/users/create">Cadastar</a></p>
+
+</nav>
+
+<h1>Usuários</h1>
+
+<ul class="list">
+    {{#if emptyUsers}}
+        <p>Não há usuários cadastrados</p>
+    {{/if}}
     {{#each users}}
         <li>
-            {{this.title}}
+            {{this.name}}
         </li>
+        <li>
+            {{this.mail}}
+        </li>
+        <li>
+            {{this.cpf}}
+        </li>
+        <li>
+            {{this.cell_phone}}
+        </li>
+        <li>
+            {{this.birth_date}}
+        </li>
+        <li>
+            {{this.age}}
+        </li>
+        <li>
+            {{this.gender}}
+        </li>
+        <span class="actions">
+            <a href="/users/edit/{{this.id}}"><i class="bi bi-pencil-square"></i></a> 
+            <form action="/users/remove" method="post">
+                <input type="hidden" name="id" value="{{this.id}}">
+                <button type="submit">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </form>
+        </span>
     {{/each}}
 </ul>
-</br>
-<p><a href="/">Voltar</a></p>

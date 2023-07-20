@@ -1,12 +1,30 @@
-<h1>Supermercados</h1>
-<p><a href="/markets/create">Cadastar</a></p>
+<nav>
+    <h2>Supermercados</h2>
 
-<ul class="user-list">
-    {{#each markets}}
+    <p><a href="/">Voltar</a></p>
+
+    <p><a href="/markets/create">Cadastar</a></p>
+
+</nav>
+
+<h1>Supermercados</h1>
+
+<ul class="list">
+    {{#if emptyMarkets}}
+        <p>Não há supermercados cadastrados</p>
+    {{/if}}
+    {{#each users}}
         <li>
-            {{this.title}}
+            {{this.name}}
         </li>
+        <span class="actions">
+            <a href="/markets/edit/{{this.id}}"><i class="bi bi-pencil-square"></i></a> 
+            <form action="/markets/remove" method="post">
+                <input type="hidden" name="id" value="{{this.id}}">
+                <button type="submit">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </form>
+        </span>
     {{/each}}
 </ul>
-</br>
-<p><a href="/">Voltar</a></p>
