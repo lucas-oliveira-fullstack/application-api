@@ -29,8 +29,10 @@ const UsersRules = require('./models/UsersRules')
 const UsersSelectedStores = require('./models/UsersSelectedStores')
 
 //Router
-const usersRoutes = require('./routes/usersRoutes')
+const autopartsRoutes = require('./routes/autoPartsRoutes')
 const marketsRoutes = require('./routes/marketsRoutes')
+const pharmaciesRoutes = require('./routes/pharmaciesRoutes')
+const usersRoutes = require('./routes/usersRoutes')
 
 app.engine('handlebars', handlebarsEngine())
 app.set('view engine', 'handlebars')
@@ -49,9 +51,13 @@ app.get('/', function(req, res) {
   res.render('home')
 })
 
-app.use('/users', usersRoutes)
+app.use('/autoparts', autopartsRoutes)
 
 app.use('/markets', marketsRoutes)
+
+app.use('/pharmaciews', pharmaciesRoutes)
+
+app.use('/users', usersRoutes)
 
 conn
 .sync()
