@@ -1,0 +1,16 @@
+<nav>
+    <h2>Editando a subcategoria: {{subcategories.name}}</h2>
+    <p><a href="/subcategories">Voltar</a></p>
+</nav>
+<form action="/subcategories/edit" method="POST" class="form">
+    <div class="form-control">
+        <label for="name">Nome:</label>
+        <input type="text" name="name" placeholder="Digite o seu nome completo">
+    </div>
+    <div class="form-control">
+        <label for="categoryID">Categoria ID:</label>
+        <input type="text" name="categoryID" placeholder="Digite o ID da categoria">
+    </div>
+    </br>
+    <input type="submit" value="Salvar">
+</form>

@@ -1,19 +1,19 @@
 <nav>
-    <h2>Farmácias</h2>
+    <h2>Produtos</h2>
     <p><a href="/">Voltar</a></p>
-    <p><a href="/pharmacies/create">Cadastar</a></p>
+    <p><a href="/products/create">Cadastar</a></p>
 </nav>
 <ul class="list">
-    {{#if emptyPharmacies}}
-        <p>Não há farmácias cadastradas</p>
+    {{#if emptyProducts}}
+        <p>Não há produtos cadastrados</p>
     {{/if}}
-    {{#each pharmacies}}
+    {{#each products}}
         <li>
             {{this.name}}
         </li>
         <span class="actions">
-            <a href="/pharmacies/edit/{{this.id}}"><i class="bi bi-pencil-square"></i></a> 
-            <form action="/pharmacies/remove" method="post">
+            <a href="/products/edit/{{this.id}}"><i class="bi bi-pencil-square"></i></a> 
+            <form action="/products/remove" method="post">
                 <input type="hidden" name="id" value="{{this.id}}">
                 <button type="submit">
                     <i class="bi bi-x-lg"></i>

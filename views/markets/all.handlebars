@@ -1,19 +1,13 @@
 <nav>
     <h2>Supermercados</h2>
-
     <p><a href="/">Voltar</a></p>
-
     <p><a href="/markets/create">Cadastar</a></p>
-
 </nav>
-
-<h1>Supermercados</h1>
-
 <ul class="list">
     {{#if emptyMarkets}}
         <p>Não há supermercados cadastrados</p>
     {{/if}}
-    {{#each users}}
+    {{#each markets}}
         <li>
             {{this.name}}
         </li>
