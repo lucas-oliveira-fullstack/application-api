@@ -1,10 +1,6 @@
-<nav>
-    <h2>Editando o usuário: {{user.name}}</h2>
-
-    <p><a href="/users">Voltar</a></p>
-</nav>
-
-<form action="/users/edit" method="post">
+<h2>Editando o usuário: {{user.name}}</h2>
+<form action="/users/edit" method="POST">
+    <input type="hidden" name="id" value="{{user.id}}">
     <div class="form-control">
         <label for="name">Nome completo:</label>
         <input type="text" name="name" placeholder="Nome completo" value="{{user.name}}">
@@ -21,5 +17,5 @@
         <label for="password_18">Senha 18+:</label>
         <input type="text" name="password_18" placeholder="Senha 18+" value="{{user.password_18}}">
     </div>
-    <input type="submit" value="Salvar">
+    <input type="submit" value="Editar">
 </form>

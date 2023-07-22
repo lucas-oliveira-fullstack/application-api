@@ -5,7 +5,18 @@ module.exports = class UserCotroller {
     static async showUsers(req, res) {
 
         const users = await User.findAll({ raw: true })
-        res.render('users/all', { users })
+
+        .then((data) => {
+
+            let emptyUsers = false
+
+            if(data.length === 0) {
+                emptyUsers = true
+            }
+
+            res.render('users/all', { users: data, emptyUsers })
+        })
+        .catch((err) => console.log(err))
     }
 
     static createUser(req,res) {
@@ -37,13 +48,17 @@ module.exports = class UserCotroller {
         res.redirect('/users')
     }
 
-    static async updateUser(req, res) {
+    static updateUser(req, res) {
 
         const id = req.params.id
 
-        const user = await User.findOne({where: { id: id }, raw: true})
+        User.findOne({where: { id: id }, raw: true})
 
-        res.render('users/edit', { user })
+        .then((data) => {
+
+            res.render('users/edit', { user: data })
+        })
+        .catch((err) => console.log(err))
     }
 
     static async updateUserPost(req, res) {
@@ -57,9 +72,11 @@ module.exports = class UserCotroller {
             password_18: req.body.password_18
         }
 
-        await User.update(user, {where: {id: id}})
+        User.update(user, { where: { id: id } })
 
-        res.redirect('/users')
+        .then(res.redirect('/users'))
+        
+        .catch((err) => console.log(err))
     }
 
     static async removeUser(req,res) {

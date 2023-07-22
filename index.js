@@ -55,7 +55,7 @@ app.use('/autoparts', autopartsRoutes)
 
 app.use('/markets', marketsRoutes)
 
-app.use('/pharmaciews', pharmaciesRoutes)
+app.use('/pharmacies', pharmaciesRoutes)
 
 app.use('/users', usersRoutes)
 
