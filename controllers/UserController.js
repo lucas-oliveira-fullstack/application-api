@@ -10,7 +10,8 @@ const confirmEmail = require('../helpers/validation-email')
 const addressInfoByCEP = require('../helpers/take-address-info')
 
 module.exports = class UserController {
-    static async register(req, res) {
+
+    static async personalData(req, res) {
         const {
             name,
             email,
@@ -18,11 +19,7 @@ module.exports = class UserController {
             cell_phone,
             birth_date,
             age,
-            gender,
-            photo,
-            postal_code,
-            house_number,
-            complement,
+            gender
         } = req.body
 
         //Check if email is valid
@@ -35,28 +32,9 @@ module.exports = class UserController {
         //Recive age
         const newAge = calculateAge.takeAge(birth_date)
 
-        //Confirm email
         try {
-
-            await confirmEmail.sendVerificationCodeEmail(email, name)
-        } catch (error) {
-
-            res.status(500).json({ message: error.message })
-
-            return
-        }
-        
-        try {
-
-            //Address info
-            const addressInfo = await addressInfoByCEP.getAddressInfoByCEP(postal_code)
-            const newStreetName = addressInfo.logradouro
-            const newNeighborhood = addressInfo.bairro
-            const newCity = addressInfo.localidade
-            const newState = addressInfo.uf
-
             // Check required inputs
-            if (!name || !email || !cell_phone || !birth_date || !gender || !postal_code || !house_number) {
+            if (!name || !email || !cell_phone || !birth_date || !gender) {
                 res.status(422).json({ message: 'Preencha todos os campos obrigatórios!' })
                 return
             }
@@ -69,16 +47,77 @@ module.exports = class UserController {
                 res.status(422).json({ message: 'E-mail ou Celular já está sendo utilizado, por favor utilize outro!' })
                 return
             }
+        } catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
+    static async createSendCode(req, res) {
+        const { name, email } = req.body
+
+        try {
+            await confirmEmail.sendVerificationCodeEmail(email, name)
+
+            res.status(201).json({ message: 'E-mail enviado com sucesso!' })
+        } catch(error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
+    static async confirmEmail(req, res) {
+        const { validationCode } = req.body
+
+        try {
+            const user = await User.findOne({ where: { email: req.body.email } })
+
+            if(!user) {
+                res.status(404).json({ message: 'Usuário não encontrado!' })
+
+                return
+            }
+
+            if(user.validationCode !== validationCode) {
+                res.status(400).json({ message: 'Código inválido' })
+
+                return
+            }
+
+            imageProfile
+        } catch(error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
+    static async profileImage(req, res) {
+
+    }
+
+    static async address(req, res) {
+        const { postal_code, house_number, complement } = req.body
+
+        try {
+            //Address info
+            const addressInfo = await addressInfoByCEP.getAddressInfoByCEP(postal_code)
+            const newStreetName = addressInfo.logradouro
+            const newNeighborhood = addressInfo.bairro
+            const newCity = addressInfo.localidade
+            const newState = addressInfo.uf
+        } catch(error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
+    static async register(req, res) {
+        const {
+            photo
+        } = req.body
+        
+        try {
+
+            
 
             // Create user
             const newUser = await User.create({
-                name,
-                email,
-                cpf,
-                cell_phone,
-                birth_date,
-                age: newAge,
-                gender,
                 photo,
                 postal_code,
                 street_name: newStreetName,
@@ -89,7 +128,6 @@ module.exports = class UserController {
                 state: newState,
             })
 
-            // Optionally, you can return the created user
             res.status(201).json(newUser)
         } catch (error) {
             res.status(500).json({ message: error.message })
