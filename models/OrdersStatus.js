@@ -1,15 +1,16 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const OrdersStatus = sequelize.define('OrdersStatus', {
+const OrderStatus = sequelize.define('OrderStatus', {
     id: {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     status: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: false
     }
 })
 
-module.exports = OrdersStatus
+module.exports = OrderStatus

@@ -1,9 +1,9 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const Users = require('./Users')
+const User = require('./Users')
 
-const UsersAddresses = sequelize.define('UsersAddresses', {
+const UserAddress = sequelize.define('UserAddress', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -15,7 +15,7 @@ const UsersAddresses = sequelize.define('UsersAddresses', {
     },
     postal_code: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     street_name: {
         type: DataTypes.STRING,
@@ -27,7 +27,8 @@ const UsersAddresses = sequelize.define('UsersAddresses', {
     },
     complement: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     neighborhood: {
         type: DataTypes.STRING,
@@ -43,6 +44,8 @@ const UsersAddresses = sequelize.define('UsersAddresses', {
     }
 })
 
-UsersAddresses.belongsTo(Users, { foreignKey: 'usersID', allowNull: false })
+UserAddress.belongsTo(User, { foreignKey: 'userID', allowNull: false })
 
-module.exports = UsersAddresses
+UserAddress.hasOne(User)
+
+module.exports = UserAddress

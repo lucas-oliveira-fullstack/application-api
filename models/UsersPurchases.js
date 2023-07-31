@@ -10,7 +10,7 @@ const Market = require('./Markets')
 const Pharmacy = require('./Pharmacies')
 const Product = require('./Products')
 
-const UserOrder = sequelize.define('UserOrder', {
+const UserPurchase = sequelize.define('UserPurchase', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -47,20 +47,20 @@ const UserOrder = sequelize.define('UserOrder', {
     }
 })
 
-UserOrder.belongsTo(OrderStatus, { foreignKey: 'ordersstatusID', allowNull: false })
-UserOrder.belongsTo(PaymentMethod, { foreignKey: 'paymentmethodID', allowNull: false })
-UserOrder.belongsTo(AutoPart, { foreignKey: 'autopartID', allowNull: true})
-UserOrder.belongsTo(Market, { foreignKey: 'marketID', allowNull: true})
-UserOrder.belongsTo(Pharmacy, { foreignKey: 'pharmacyID', allowNull: true})
-UserOrder.belongsTo(StoreProduct, { foreignKey: 'productID', allowNull: false})
-UserOrder.belongsTo(User, { foreignKey: 'usersID', allowNull: false})
+UserPurchase.belongsTo(OrderStatus, { foreignKey: 'ordersstatusID', allowNull: false })
+UserPurchase.belongsTo(PaymentMethod, { foreignKey: 'paymentmethodID', allowNull: false })
+UserPurchase.belongsTo(AutoPart, { foreignKey: 'autopartID', allowNull: true})
+UserPurchase.belongsTo(Market, { foreignKey: 'marketID', allowNull: true})
+UserPurchase.belongsTo(Pharmacy, { foreignKey: 'pharmacyID', allowNull: true})
+UserPurchase.belongsTo(StoreProduct, { foreignKey: 'productID', allowNull: false})
+UserPurchase.belongsTo(User, { foreignKey: 'usersID', allowNull: false})
 
-UserOrder.hasMany(OrderStatus)
-UserOrder.hasMany(PaymentMethod)
-UserOrder.hasMany(AutoPart)
-UserOrder.hasMany(Market)
-UserOrder.hasMany(Pharmacy)
-UserOrder.hasMany(User)
-UserOrder.hasMany(Product)
+UserPurchase.hasMany(OrderStatus)
+UserPurchase.hasMany(PaymentMethod)
+UserPurchase.hasMany(AutoPart)
+UserPurchase.hasMany(Market)
+UserPurchase.hasMany(Pharmacy)
+UserPurchase.hasMany(User)
+UserPurchase.hasMany(Product)
 
 module.exports = UserOrder

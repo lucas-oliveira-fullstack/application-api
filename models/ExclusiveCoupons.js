@@ -1,14 +1,14 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const AutoParts = require('./AutoParts')
-const Markets = require('./Markets')
-const Pharmacies = require('./Pharmacies')
-const StoresProducts = require('./StoresProducts')
-const Users = require('./Users')
+const AutoPart = require('./AutoParts')
+const Market = require('./Markets')
+const Pharmacy = require('./Pharmacies')
+const StoreProduct = require('./StoresProducts')
+const User = require('./Users')
 
 
-const ExclusiveCoupons = sequelize.define('ExclusiveCoupons', {
+const ExclusiveCoupon = sequelize.define('ExclusiveCoupon', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -28,14 +28,21 @@ const ExclusiveCoupons = sequelize.define('ExclusiveCoupons', {
     },
     active: {
         type: DataTypes.TINYINT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     }
 })
 
-ExclusiveCoupons.belongsTo(AutoParts, { foreignKey: 'autopartsID', allowNull: true})
-ExclusiveCoupons.belongsTo(Markets, { foreignKey: 'marketsID', allowNull: true })
-ExclusiveCoupons.belongsTo(Pharmacies, { foreignKey: 'pharmaciesID', allowNull: true })
-ExclusiveCoupons.belongsTo(StoresProducts, { foreignKey: 'productsID', allowNull: false })
-ExclusiveCoupons.belongsTo(Users, { foreignKey: 'usersID', allowNull: true })
+ExclusiveCoupon.belongsTo(AutoPart, { foreignKey: 'autopartID', allowNull: true})
+ExclusiveCoupon.belongsTo(Market, { foreignKey: 'marketID', allowNull: true })
+ExclusiveCoupon.belongsTo(Pharmacy, { foreignKey: 'pharmacyID', allowNull: true })
+ExclusiveCoupon.belongsTo(StoreProduct, { foreignKey: 'productID', allowNull: false })
+ExclusiveCoupon.belongsTo(User, { foreignKey: 'userID', allowNull: true })
 
-module.exports = ExclusiveCoupons
+ExclusiveCoupon.hasMany(AutoPart)
+ExclusiveCoupon.hasMany(Market)
+ExclusiveCoupon.hasMany(Pharmacy)
+ExclusiveCoupon.hasMany(StoreProduct)
+ExclusiveCoupon.hasMany(User)
+
+module.exports = ExclusiveCoupon

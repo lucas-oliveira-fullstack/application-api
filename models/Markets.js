@@ -1,68 +1,68 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const PaymentMethods = require('./PaymentMethods')
-
-const Markets = sequelize.define('Markets', {
+const Market = sequelize.define('Market', {
     id: {
         primaryKey: true,
-        type: DataTypes.INTEGER,
-        required: true
+        autoIncrement: true,
+        type: DataTypes.INTEGER
     },
     logo: {
         type: DataTypes.BLOB,
-        required: false
+        allowNull: true,
+        defaultValue: true
     },
     name: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     phone_number: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     open_close_monday_friday: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     open_close_saturday: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: true,
+        defaultValue: true
     },
     open_close_sunday_holiday: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: true
     },
     postal_code: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     street_name: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     store_number: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     complement: {
         type: DataTypes.STRING,
-        required: false
+        allowNull: true,
+        defaultValue: true
     },
     neighborhood: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     city: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     },
     state: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
     }
 })
 
-Markets.belongsTo(PaymentMethods, { foreignKey: 'paymentmethodsID', allowNull: false })
-
-module.exports = Markets
+module.exports = Market

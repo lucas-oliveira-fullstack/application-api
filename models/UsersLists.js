@@ -1,14 +1,18 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const Users = require('./Users')
-const Products = require('./Products')
+const User = require('./Users')
+const Product = require('./Products')
 
-const UsersLists = sequelize.define('UsersLists', {
+const UserList = sequelize.define('UserList', {
     id: {
         primaryKey: true,
         autoIncrement: true,
         type: DataTypes.INTEGER
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     quantity: {
         type: DataTypes.INTEGER,
@@ -16,7 +20,10 @@ const UsersLists = sequelize.define('UsersLists', {
     }
 })
 
-UsersLists.belongsTo(Users, { foreignKey: 'usersID', allowNull: false })
-UsersLists.belongsTo(Products, { foreignKey: 'productsID', allowNull: false })
+UserList.belongsTo(User, { foreignKey: 'userID', allowNull: false })
+UserList.belongsTo(Product, { foreignKey: 'productID', allowNull: false })
 
-module.exports = UsersLists
+UserList.hasMany(User)
+UserList.hasMany(Product)
+
+module.exports = UserList

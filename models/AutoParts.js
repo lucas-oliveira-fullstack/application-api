@@ -1,24 +1,24 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const PaymentMethods = require('./PaymentMethods')
-
-const AutoParts = sequelize.define('AutoParts', {
+const AutoPart = sequelize.define('AutoPart', {
     id: {
         primaryKey: true,
+        autoIncrement: true,
         type: DataTypes.INTEGER,
     },
     logo: {
         type: DataTypes.BLOB,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     phone_number: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     open_close_monday_friday: {
         type: DataTypes.STRING,
@@ -26,11 +26,13 @@ const AutoParts = sequelize.define('AutoParts', {
     },
     open_close_saturday: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     open_close_sunday_holiday: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     postal_code: {
         type: DataTypes.STRING,
@@ -46,7 +48,8 @@ const AutoParts = sequelize.define('AutoParts', {
     },
     complement: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     neighborhood: {
         type: DataTypes.STRING,
@@ -62,6 +65,4 @@ const AutoParts = sequelize.define('AutoParts', {
     }
 })
 
-AutoParts.belongsTo(PaymentMethods, { foreignKey: 'paymentmethodsID', allowNull: false })
-
-module.exports = AutoParts
+module.exports = AutoPart

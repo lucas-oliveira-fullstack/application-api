@@ -1,16 +1,20 @@
-const { Sequelize, DataTypes }  = require('sequelize')
+const { DataTypes }  = require('sequelize')
 const sequelize = require('../db/conn')
 
-const AutoParts = require('./AutoParts')
-const Markets = require('./Markets')
-const Pharmacies = require('./Pharmacies')
-const Products = require('./Products')
+const AutoPart = require('./AutoParts')
+const Market = require('./Markets')
+const Pharmacy = require('./Pharmacies')
+const Product = require('./Products')
 
-const StoresProducts = sequelize.define('StoresProducts', {
+const StoreProduct = sequelize.define('StoreProduct', {
     id: {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     price: {
         type: DataTypes.DECIMAL(5,2),
@@ -22,9 +26,14 @@ const StoresProducts = sequelize.define('StoresProducts', {
     }
 })
 
-StoresProducts.belongsTo(AutoParts, { foreignKey: 'autopartsID', allowNull: true })
-StoresProducts.belongsTo(Markets, { foreignKey: 'marketsID', allowNull: true })
-StoresProducts.belongsTo(Pharmacies, { foreignKey: 'phamaciesID', allowNull: true })
-StoresProducts.belongsTo(Products, { foreignKey: 'productsID', allowNullL: false })
+StoreProduct.belongsTo(AutoPart, { foreignKey: 'autopartID', allowNull: true })
+StoreProduct.belongsTo(Market, { foreignKey: 'marketID', allowNull: true })
+StoreProduct.belongsTo(Pharmacy, { foreignKey: 'phamacyID', allowNull: true })
+StoreProduct.belongsTo(Product, { foreignKey: 'productID', allowNull: false })
 
-module.exports = StoresProducts
+StoreProduct.hasMany(AutoPart)
+StoreProduct.hasMany(Market)
+StoreProduct.hasMany(Pharmacy)
+StoreProduct.hasMany(Product)
+
+module.exports = StoreProduct

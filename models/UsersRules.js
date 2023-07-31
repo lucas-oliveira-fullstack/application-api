@@ -1,10 +1,10 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const Users = require('./Users')
+const User = require('./Users')
 
 
-const UsersRules = sequelize.define('UserRules', {
+const UserRule = sequelize.define('UserRule', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -12,7 +12,8 @@ const UsersRules = sequelize.define('UserRules', {
     },
     terms_policies: {
         type: DataTypes.TINYINT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     visibity_adults_products: {
         type: DataTypes.TINYINT,
@@ -44,11 +45,13 @@ const UsersRules = sequelize.define('UserRules', {
     },
     mail_newsteler: {
         type: DataTypes.TINYINT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     zap_newsteler: {
         type: DataTypes.TINYINT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     app_update: {
         type: DataTypes.TINYINT,
@@ -56,6 +59,8 @@ const UsersRules = sequelize.define('UserRules', {
     }
 })
 
-UsersRules.belongsTo(Users, { foreignKey: 'usersID', allowNull: false })
+UserRule.belongsTo(User, { foreignKey: 'userID', allowNull: false })
 
-module.exports = UsersRules
+UserRule.hasMany(User)
+
+module.exports = UserRule

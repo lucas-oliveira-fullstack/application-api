@@ -1,8 +1,8 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
 
-const Categories = sequelize.define('Categories', {
+const Category = sequelize.define('Category', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -10,7 +10,8 @@ const Categories = sequelize.define('Categories', {
     },
     photo: {
         type: DataTypes.BLOB,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     name: {
         type: DataTypes.STRING,
@@ -18,4 +19,4 @@ const Categories = sequelize.define('Categories', {
     }
 })
 
-module.exports = Categories
+module.exports = Category

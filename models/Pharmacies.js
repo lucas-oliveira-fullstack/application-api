@@ -1,16 +1,16 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const PaymentMethods = require('./PaymentMethods')
-
-const Pharmacies = sequelize.define('Pharmacies', {
+const Pharmacy = sequelize.define('Pharmacy', {
     id: {
         primaryKey: true,
+        autoIncrement: true,
         type: DataTypes.INTEGER,
     },
     logo: {
         type: DataTypes.BLOB,
-        allowNull: true
+        allowNull: true,
+        defaultValue: true
     },
     name: {
         type: DataTypes.STRING,
@@ -26,7 +26,13 @@ const Pharmacies = sequelize.define('Pharmacies', {
     },
     open_close_saturday: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true,
+        defaultValue: null
+    },
+    open_close_sunday_holiday: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null
     },
     postal_code: {
         type: DataTypes.STRING,
@@ -42,7 +48,8 @@ const Pharmacies = sequelize.define('Pharmacies', {
     },
     complement: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     neighborhood: {
         type: DataTypes.STRING,
@@ -58,6 +65,4 @@ const Pharmacies = sequelize.define('Pharmacies', {
     }
 })
 
-Pharmacies.belongsTo(PaymentMethods, { foreignKey: 'paymentmethodsID', allowNull: false })
-
-module.exports = Pharmacies
+module.exports = Pharmacy

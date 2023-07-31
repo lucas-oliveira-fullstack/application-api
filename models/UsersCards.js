@@ -1,9 +1,9 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const Users = require('./Users')
+const User = require('./Users')
 
-const UsersCards = sequelize.define('UsersCards', {
+const UserCard = sequelize.define('UserCard', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -39,6 +39,8 @@ const UsersCards = sequelize.define('UsersCards', {
     }
 })
 
-UsersCards.belongsTo(Users, { foreignKey: 'usersID', allowNull: false })
+UserCard.belongsTo(User, { foreignKey: 'userID', allowNull: false })
 
-module.exports = UsersCards
+UserCard.hasMany(User)
+
+module.exports = UserCard

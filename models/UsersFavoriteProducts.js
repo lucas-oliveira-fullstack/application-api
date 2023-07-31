@@ -1,10 +1,10 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const Users = require('./Users')
-const Products = require('./Products')
+const User = require('./Users')
+const Product = require('./Products')
 
-const UsersFavoriteProducts = sequelize.define('UsersFavoriteProducts', {
+const UserFavoriteProduct = sequelize.define('UserFavoriteProduct', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -12,8 +12,11 @@ const UsersFavoriteProducts = sequelize.define('UsersFavoriteProducts', {
     }
 })
 
-UsersFavoriteProducts.belongsTo(Users, { foreignKey: 'usersID' })
-UsersFavoriteProducts.belongsTo(Products, { foreignKey: 'productsID' })
+UserFavoriteProduct.belongsTo(User, { foreignKey: 'userID' })
+UserFavoriteProduct.belongsTo(Product, { foreignKey: 'productID' })
 
-module.exports = UsersFavoriteProducts
+UserFavoriteProduct.hasMany(User)
+UserFavoriteProduct.hasMany(Product)
+
+module.exports = UserFavoriteProduct
 

@@ -1,12 +1,12 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const AutoParts = require('./AutoParts')
-const Markets = require('./Markets')
-const Pharmacies = require('./Pharmacies')
-const Users = require('./Users')
+const AutoPart = require('./AutoParts')
+const Market = require('./Markets')
+const Pharmacy = require('./Pharmacies')
+const User = require('./Users')
 
-const UsersSelectedStores = sequelize.define ('UsersSelectedStores', {
+const UserSelectedStore = sequelize.define ('UsersSelectedStores', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -14,9 +14,14 @@ const UsersSelectedStores = sequelize.define ('UsersSelectedStores', {
     }
 })
 
-UsersSelectedStores.belongsTo(AutoParts, { foreignKey: 'autopartsID', allowNull: true })
-UsersSelectedStores.belongsTo(Markets, { foreignKey: 'autopartsID', allowNull: true })
-UsersSelectedStores.belongsTo(Pharmacies, { foreignKey: 'autopartsID', allowNull: true })
-UsersSelectedStores.belongsTo(Users, { foreignKey: 'autopartsID', allowNull: false })
+UserSelectedStore.belongsTo(AutoPart, { foreignKey: 'autopartID', allowNull: true })
+UserSelectedStore.belongsTo(Market, { foreignKey: 'marketID', allowNull: true })
+UserSelectedStore.belongsTo(Pharmacy, { foreignKey: 'pharmacyID', allowNull: true })
+UserSelectedStore.belongsTo(User, { foreignKey: 'userID', allowNull: false })
 
-module.exports = UsersSelectedStores
+UserSelectedStore.hasMany(AutoPart)
+UserSelectedStore.hasMany(Market)
+UserSelectedStore.hasMany(Pharmacy)
+UserSelectedStore.hasMany(User)
+
+module.exports = UserSelectedStore

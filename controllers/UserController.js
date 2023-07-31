@@ -1,6 +1,6 @@
 const User = require('../models/Users')
 
-module.exports = class UserCotroller {
+module.exports = class UserController {
 
     static async showUsers(req, res) {
 

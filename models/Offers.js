@@ -1,13 +1,12 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const AutoParts = require('./AutoParts')
-const Markets = require('./Markets')
-const Pharmacies = require('./Pharmacies')
-const StoresProducts = require('./StoresProducts')
-const Users = require('./Users')
+const AutoPart = require('./AutoParts')
+const Market = require('./Markets')
+const Pharmacy = require('./Pharmacies')
+const StoreProduct = require('./StoresProducts')
 
-const Offers = sequelize.define('Offers', {
+const Offer = sequelize.define('Offer', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -15,30 +14,37 @@ const Offers = sequelize.define('Offers', {
     },
     title: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     description: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     condition: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: true
     },
     old_price: {
         type: DataTypes.DECIMAL(5,2),
-        allowNull: true
+        allowNull: true,
+        defaultValue: true
     },
     offer_price: {
         type: DataTypes.DECIMAL(5,2),
-        allowNullL: true
-    },
+        allowNullL: true,
+        defaultValue: true
+    }
 })
 
-Offers.belongsTo(AutoParts, { foreignKey: 'autopartsID', allowNull: true})
-Offers.belongsTo(Markets, { foreignKey: 'marketsID', allowNull: true })
-Offers.belongsTo(Pharmacies, { foreignKey: 'pharmaciesID', allowNull: true })
-Offers.belongsTo(StoresProducts, { foreignKey: 'productsID', allowNull: false })
-Offers.belongsTo(Users, { foreignKey: 'usersID', allowNull: true })
+Offer.belongsTo(AutoPart, { foreignKey: 'autopartID', allowNull: true})
+Offer.belongsTo(Market, { foreignKey: 'marketID', allowNull: true })
+Offer.belongsTo(Pharmacy, { foreignKey: 'pharmacyID', allowNull: true })
+Offer.belongsTo(StoreProduct, { foreignKey: 'productID', allowNull: false })
 
-module.exports = Offers
+Offer.hasMany(AutoPart)
+Offer.hasMany(Market)
+Offer.hasMany(Pharmacy)
+Offer.hasMany(StoreProduct)
+
+module.exports = Offer

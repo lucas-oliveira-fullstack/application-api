@@ -1,7 +1,7 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const Users = sequelize.define('Users', {
+const User = sequelize.define('User', {
     id: {
         autoIncrement: true,
         primaryKey: true,
@@ -9,9 +9,10 @@ const Users = sequelize.define('Users', {
     },
     cpf: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
-    mail: {
+    email: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -37,7 +38,8 @@ const Users = sequelize.define('Users', {
     },
     photo: {
         type: DataTypes.BLOB,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     postal_code: {
         type: DataTypes.STRING,
@@ -53,7 +55,8 @@ const Users = sequelize.define('Users', {
     },
     complement: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     },
     neighborhood: {
         type: DataTypes.STRING,
@@ -69,8 +72,9 @@ const Users = sequelize.define('Users', {
     },
     password_18: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: null
     }
 })
 
-module.exports = Users
+module.exports = User
