@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const User = require('./Users')
+const User = require('./User')
 
 
 const UserRule = sequelize.define('UserRule', {

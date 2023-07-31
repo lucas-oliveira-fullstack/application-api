@@ -3,8 +3,8 @@ const sequelize = require('../db/conn')
 
 const AutoPart = require('./AutoParts')
 const Market = require('./Markets')
-const Pharmacy = require('./Pharmacies')
-const StoreProduct = require('./StoresProducts')
+const Pharmacy = require('./Pharmacy')
+const StoreProduct = require('./StoreProduct')
 
 const Offer = sequelize.define('Offer', {
     id: {

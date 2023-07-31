@@ -1,14 +1,14 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
-const OrderStatus = require('./OrdersStatus')
-const PaymentMethod = require('./PaymentMethods')
-const StoreProduct = require('./StoresProducts')
-const User = require('./Users')
-const AutoPart = require('./AutoParts')
-const Market = require('./Markets')
-const Pharmacy = require('./Pharmacies')
-const Product = require('./Products')
+const OrderStatus = require('./OrderStatus')
+const PaymentMethod = require('./PaymentMethod')
+const StoreProduct = require('./StoreProduct')
+const User = require('./User')
+const AutoPart = require('./AutoPart')
+const Market = require('./Market')
+const Pharmacy = require('./Pharmacy')
+const Product = require('./Product')
 
 const UserOrder = sequelize.define('UserOrder', {
     id: {

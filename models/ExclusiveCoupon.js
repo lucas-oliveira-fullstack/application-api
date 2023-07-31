@@ -2,10 +2,10 @@ const { DataTypes } = require('sequelize')
 const sequelize = require('../db/conn')
 
 const AutoPart = require('./AutoParts')
-const Market = require('./Markets')
-const Pharmacy = require('./Pharmacies')
-const StoreProduct = require('./StoresProducts')
-const User = require('./Users')
+const Market = require('./Market')
+const Pharmacy = require('./Pharmacy')
+const StoreProduct = require('./StoreProduct')
+const User = require('./User')
 
 
 const ExclusiveCoupon = sequelize.define('ExclusiveCoupon', {
