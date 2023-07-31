@@ -74,6 +74,11 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: null
+    },
+    validation_email: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null
     }
 })
 
