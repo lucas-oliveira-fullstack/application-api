@@ -7,7 +7,7 @@ async function sendVerificationCodeEmail(email, name) {
   try {
 
     //Generate the validation code and save it to the database
-    const validationCode = createValidationCode.generateRandomNumbers()
+    const validationCode = await createValidationCode.generateRandomNumbers()
 
     //Transporter settings
     const transporter = nodemailer.createTransport({

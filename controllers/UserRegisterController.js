@@ -8,8 +8,14 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const calculateAge = require('../helpers/calculate-age')
 const confirmEmail = require('../helpers/validation-email')
 const addressInfoByCEP = require('../helpers/take-address-info')
+const createUserToken = require('../helpers/create-user-token')
 
-module.exports = class UserController {
+module.exports = class UserRegisterController {
+
+    constructor() {
+        //Temporary variable for storing user data between the steps of the register flow
+        this.userData = {}
+    }
 
     static async personalData(req, res) {
         const {
@@ -47,6 +53,20 @@ module.exports = class UserController {
                 res.status(422).json({ message: 'E-mail ou Celular já está sendo utilizado, por favor utilize outro!' })
                 return
             }
+
+            //Temporarily stores user personal info
+            this.userData = {
+                ...this.userData,
+                name,
+                email,
+                cpf,
+                cell_phone,
+                birth_date,
+                age: newAge,
+                gender,
+            }
+
+            res.status(200).json({ message: 'Dados pessoais salvos com sucesso!' })
         } catch (error) {
             res.status(500).json({ message: error.message })
         }
@@ -68,6 +88,13 @@ module.exports = class UserController {
         const { validationCode } = req.body
 
         try {
+            //Check if user input name and email
+            if(!this.userData.name || !this.userData.email) {
+                res.status(400).json({ message: 'Você precisa preencher os dados pessoais e enviar o código de confirmação por e-mail primeiro' })
+
+                return
+            }
+
             const user = await User.findOne({ where: { email: req.body.email } })
 
             if(!user) {
@@ -76,20 +103,28 @@ module.exports = class UserController {
                 return
             }
 
-            if(user.validationCode !== validationCode) {
+            if(user.validation_email !== validationCode) {
                 res.status(400).json({ message: 'Código inválido' })
 
                 return
             }
 
-            imageProfile
+            //Update userData object to remove validation code and confirm email validate
+            this.userData = {
+                ...this.userData,
+                validation_email: null
+            }
+            
+            res.status(200).json({ message: 'E-mail confirmado com sucesso!' })
         } catch(error) {
             res.status(500).json({ message: error.message })
         }
     }
 
     static async profileImage(req, res) {
-
+        if(req.file) {
+            this.userData.photo = req.file.filename
+        }
     }
 
     static async address(req, res) {
@@ -102,33 +137,43 @@ module.exports = class UserController {
             const newNeighborhood = addressInfo.bairro
             const newCity = addressInfo.localidade
             const newState = addressInfo.uf
+
+            //Temporarily stores user personal info
+            this.userData = {
+                ...this.userData,
+                postal_code,
+                house_number,
+                complement,
+                street_name: newStreetName,
+                neighborhood: newNeighborhood,
+                city: newCity,
+                state: newState,
+            }
+
+            res.status(200).json({ message: 'Endereço salvo com sucesso!' })
+
         } catch(error) {
             res.status(500).json({ message: error.message })
         }
     }
 
     static async register(req, res) {
-        const {
-            photo
-        } = req.body
-        
         try {
+            //Check if all the data has been filled in
+            if(Object.keys(this.userData).length === 0) {
+                res.status(400).json({ message: 'Você precisa preencher todos os dados antes de finalizar o cadastro' })
 
-            
+                return
+            }
 
-            // Create user
-            const newUser = await User.create({
-                photo,
-                postal_code,
-                street_name: newStreetName,
-                house_number,
-                complement,
-                neighborhood: newNeighborhood,
-                city: newCity,
-                state: newState,
-            })
+            //Create user with userData
+            const newUser = await User.create(this.userData)
 
-            res.status(201).json(newUser)
+            //Cleans the temporary data
+            this.userData = {}
+
+            // Create token ando send res with token after user creation
+            await createUserToken(newUser, req, res)
         } catch (error) {
             res.status(500).json({ message: error.message })
         }
