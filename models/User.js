@@ -70,12 +70,22 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null
+    },
     password_18: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: null
     },
     validation_email: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null
+    },
+    validation_cell: {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: null

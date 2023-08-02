@@ -2,7 +2,7 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
 //Helpers
 const calculateAge = require('../helpers/calculate-age')
@@ -25,12 +25,14 @@ module.exports = class UserRegisterController {
             cell_phone,
             birth_date,
             age,
-            gender
+            gender,
+            password,
+            confirm_password,
         } = req.body
 
         //Check if email is valid
         if(!emailRegex.test(email)) {
-            res.status(422).json({message: 'E-mail inválido'})
+            res.status(422).json({ message: 'E-mail inválido' })
 
             return
         }
@@ -40,7 +42,7 @@ module.exports = class UserRegisterController {
 
         try {
             // Check required inputs
-            if (!name || !email || !cell_phone || !birth_date || !gender) {
+            if (!name || !email || !cell_phone || !birth_date || !gender || !password || !confirm_password) {
                 res.status(422).json({ message: 'Preencha todos os campos obrigatórios!' })
                 return
             }
@@ -54,7 +56,18 @@ module.exports = class UserRegisterController {
                 return
             }
 
-            //Temporarily stores user personal info
+            // Check password and confirmpassword
+            if(password !== confirm_password) {
+                res.status(422).json({message: 'O campo confirmar senha deve ser igual ao campo senha!'})
+
+                return
+            }
+            
+            // Create password
+            const salt = await bcrypt.genSalt(12)
+            const passwordHash = await bcrypt.hash(password, salt)
+
+            // Temporarily stores user personal info
             this.userData = {
                 ...this.userData,
                 name,
@@ -64,6 +77,7 @@ module.exports = class UserRegisterController {
                 birth_date,
                 age: newAge,
                 gender,
+                password: passwordHash
             }
 
             res.status(200).json({ message: 'Dados pessoais salvos com sucesso!' })

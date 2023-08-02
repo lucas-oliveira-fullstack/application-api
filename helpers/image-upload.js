@@ -17,7 +17,7 @@ const imageStorage = multer.diskStorage({
     }
 })
 
-const imagUpload = multer({
+const imageUpload = multer({
     storage: imageStorage,
     fileFilter(req, file, cb) {
         if(!file.originalname.match(/\.(png || jpeg)$/)) {
@@ -28,4 +28,4 @@ const imagUpload = multer({
     },
 })
 
-module.exports = { imagUpload }
+module.exports = { imageUpload }
