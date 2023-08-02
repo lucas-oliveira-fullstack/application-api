@@ -9,8 +9,9 @@ const calculateAge = require('../helpers/calculate-age')
 const confirmEmail = require('../helpers/validation-email')
 const addressInfoByCEP = require('../helpers/take-address-info')
 const createUserToken = require('../helpers/create-user-token')
+const { use } = require('../routes/userRoutes')
 
-module.exports = class UserRegisterController {
+module.exports = class UserController {
 
     constructor() {
         //Temporary variable for storing user data between the steps of the register flow
@@ -191,5 +192,69 @@ module.exports = class UserRegisterController {
         } catch (error) {
             res.status(500).json({ message: error.message })
         }
+    }
+
+    static async loginByEmail(req, res) {
+        const {email, password} = req.body
+
+        if(!email) {
+            res.status(422).json({ message: 'O email é obrigatório!' })
+        }
+
+        if(!password) {
+            res.status(422).json({ message: 'A senha é obrigatória!' })
+        }
+
+        // Check if user exists
+        const user = await User.findOne({ where: { email: email } })
+
+        if(!user) {
+            res.status(422).json({ message: 'E-mail não encontrado, utilize o mesmo e-mail utilizado no cadastro!' })
+
+            return
+        }
+
+        // Check id password match
+        const checkPassword = await bcrypt.compare(password, user.password)
+
+        if(!checkPassword) {
+            res.status(422).json({ message: 'Senha inválida!' })
+
+            return
+        }
+
+        await createUserToken(user, req, res)
+    }
+
+    static async loginByCell(req, res) {
+        const {cell_phone, password} = req.body
+
+        if(!cell_phone) {
+            res.status(422).json({ message: 'O celular é obrigatório!' })
+        }
+
+        if(!password) {
+            res.status(422).json({ message: 'A senha é obrigatória!' })
+        }
+
+        // Check if user exists
+        const user = await User.findOne({ where: { cell_phone: cell_phone } })
+
+        if(!user) {
+            res.status(422).json({ message: 'Celular não encontrado, utilize o mesmo número utilizado no cadastro!' })
+
+            return
+        }
+
+        // Check id password match
+        const checkPassword = await bcrypt.compare(password, user.password)
+
+        if(!checkPassword) {
+            res.status(422).json({ message: 'Senha inválida!' })
+
+            return
+        }
+
+        await createUserToken(user, req, res)
     }
 }
