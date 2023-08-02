@@ -257,4 +257,76 @@ module.exports = class UserController {
 
         await createUserToken(user, req, res)
     }
+
+    static async resetPasswordByEmail(req, res) {
+        const { email, password, confirm_password } = req.body
+
+        // Check password and confirmpassword
+        if(password !== confirm_password) {
+            res.status(422).json({message: 'O campo confirmar senha deve ser igual ao campo senha!'})
+
+            return
+        }
+        
+        try {
+            // Find user in db
+            const user = await User.findOne ({ where: { email: email } })
+
+            // Check if user exists
+            if (!user) {
+                res.status(404).json({ message: 'Usuário não encontrado!' })
+
+                return
+            }
+
+            // Create password
+            const salt = await bcrypt.genSalt(12)
+            const passwordHash = await bcrypt.hash(password, salt)
+
+            user.password = passwordHash
+
+            // Save user new password
+            await user.save()
+
+            res.status(200).json({ message: 'Senha alterada com sucesso!' })
+        } catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
+    static async resetPasswordByCell(req, res) {
+        const { cell_phone, password, confirm_password } = req.body
+
+        // Check password and confirmpassword
+        if(password !== confirm_password) {
+            res.status(422).json({message: 'O campo confirmar senha deve ser igual ao campo senha!'})
+
+            return
+        }
+        
+        try {
+            // Find user in db
+            const user = await User.findOne ({ where: { cell_phone: cell_phone } })
+
+            // Check if user exists
+            if (!user) {
+                res.status(404).json({ message: 'Usuário não encontrado!' })
+
+                return
+            }
+
+            // Create password
+            const salt = await bcrypt.genSalt(12)
+            const passwordHash = await bcrypt.hash(password, salt)
+
+            user.password = passwordHash
+
+            // Save user new password
+            await user.save()
+
+            res.status(200).json({ message: 'Senha alterada com sucesso!' })
+        } catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
 }

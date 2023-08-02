@@ -14,5 +14,7 @@ router.post('/address', UserController.address)
 router.post('/register', UserController.register)
 router.post('/login-email', UserController.loginByEmail)
 router.post('/login-cell', UserController.loginByCell)
+router.patch('/reset-password', UserController.resetPasswordByEmail)
+router.patch('/reset-password', UserController.resetPasswordByCell)
 
 module.exports = router
