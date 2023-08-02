@@ -9,7 +9,7 @@ const calculateAge = require('../helpers/calculate-age')
 const confirmEmail = require('../helpers/validation-email')
 const addressInfoByCEP = require('../helpers/take-address-info')
 const createUserToken = require('../helpers/create-user-token')
-const { use } = require('../routes/userRoutes')
+const getToken = require('../helpers/get-token')
 
 module.exports = class UserController {
 
@@ -226,38 +226,6 @@ module.exports = class UserController {
         await createUserToken(user, req, res)
     }
 
-    static async loginByCell(req, res) {
-        const {cell_phone, password} = req.body
-
-        if(!cell_phone) {
-            res.status(422).json({ message: 'O celular é obrigatório!' })
-        }
-
-        if(!password) {
-            res.status(422).json({ message: 'A senha é obrigatória!' })
-        }
-
-        // Check if user exists
-        const user = await User.findOne({ where: { cell_phone: cell_phone } })
-
-        if(!user) {
-            res.status(422).json({ message: 'Celular não encontrado, utilize o mesmo número utilizado no cadastro!' })
-
-            return
-        }
-
-        // Check id password match
-        const checkPassword = await bcrypt.compare(password, user.password)
-
-        if(!checkPassword) {
-            res.status(422).json({ message: 'Senha inválida!' })
-
-            return
-        }
-
-        await createUserToken(user, req, res)
-    }
-
     static async resetPasswordByEmail(req, res) {
         const { email, password, confirm_password } = req.body
 
@@ -328,5 +296,69 @@ module.exports = class UserController {
         } catch (error) {
             res.status(500).json({ message: error.message })
         }
+    }
+    static async loginByCell(req, res) {
+        const {cell_phone, password} = req.body
+
+        if(!cell_phone) {
+            res.status(422).json({ message: 'O celular é obrigatório!' })
+        }
+
+        if(!password) {
+            res.status(422).json({ message: 'A senha é obrigatória!' })
+        }
+
+        // Check if user exists
+        const user = await User.findOne({ where: { cell_phone: cell_phone } })
+
+        if(!user) {
+            res.status(422).json({ message: 'Celular não encontrado, utilize o mesmo número utilizado no cadastro!' })
+
+            return
+        }
+
+        // Check id password match
+        const checkPassword = await bcrypt.compare(password, user.password)
+
+        if(!checkPassword) {
+            res.status(422).json({ message: 'Senha inválida!' })
+
+            return
+        }
+
+        await createUserToken(user, req, res)
+    }
+
+    static async checkUser(req, res) {
+        let currentUser
+
+        if(req.henders.authoriztion) {
+            const token = getToken(req)
+            const decoded = jwt.verify(token, 'nossosecret')
+
+            currentUser = await User.findByPk(decoded.id)
+
+            currentUser.password = undefined
+        } else {
+            currentUser = null
+        }
+
+        res.status(200).send(currentUser)
+    }
+
+    static async getUserById(req, res) {
+        const id = req.params.id
+
+        const user = await User.findByPk(id, {
+            attributes: { exclude: ['password'] }
+        })
+
+        if(!user) {
+            res.status(422).json({ message: 'Usuário não encontrado' })
+
+            return
+        }
+
+        res.status(200).json({ user })
     }
 }
