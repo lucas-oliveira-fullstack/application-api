@@ -10,6 +10,8 @@ const confirmEmail = require('../helpers/validation-email')
 const addressInfoByCEP = require('../helpers/take-address-info')
 const createUserToken = require('../helpers/create-user-token')
 const getToken = require('../helpers/get-token')
+const getUserByToken = require('../helpers/get-user-by-token')
+const checkAgeAndRequestPassword = require('../helpers/check-age-password')
 
 module.exports = class UserController {
 
@@ -27,6 +29,8 @@ module.exports = class UserController {
             birth_date,
             age,
             gender,
+            password_18,
+            confirm_password_18,
             password,
             confirm_password,
         } = req.body
@@ -40,6 +44,9 @@ module.exports = class UserController {
 
         //Recive age
         const newAge = calculateAge.takeAge(birth_date)
+
+        // Check if user is 18 ao older
+        const { requestPassword, message } = await checkAgeAndRequestPassword(newAge)
 
         try {
             // Check required inputs
@@ -68,6 +75,22 @@ module.exports = class UserController {
             const salt = await bcrypt.genSalt(12)
             const passwordHash = await bcrypt.hash(password, salt)
 
+            // Create password18
+            let password18Hash = null
+
+            if (requestPassword) {
+                // Check password18 and confirmpassword18
+                if(password_18 !== confirm_password_18) {
+                   res.status(422).json({message: 'O campo confirmar senha deve ser igual ao campo senha!'})
+   
+                   return
+               }
+               
+               // Create password 18
+               const salt = await bcrypt.genSalt(12)
+               password18Hash = await bcrypt.hash(password_18, salt)
+             }
+
             // Temporarily stores user personal info
             this.userData = {
                 ...this.userData,
@@ -78,7 +101,8 @@ module.exports = class UserController {
                 birth_date,
                 age: newAge,
                 gender,
-                password: passwordHash
+                password: passwordHash,
+                password_18: password18Hash
             }
 
             res.status(200).json({ message: 'Dados pessoais salvos com sucesso!' })
@@ -360,5 +384,86 @@ module.exports = class UserController {
         }
 
         res.status(200).json({ user })
+    }
+
+    static async editUser(req, res) {
+        try {
+            const token = getToken(req)
+
+            const user = await getUserByToken(token)
+
+            const {
+                name,
+                birth_date,
+                age,
+                cell_phone,
+                password,
+                confirm_password,
+                password_18,
+                confirm_password_18
+            } = req.body
+        
+            let profileImage = ''
+
+            if (req.file) {
+                profileImage = req.file.filename
+            }
+
+            // Edit user name
+            user.name = name
+
+            // Edit birth_date
+            user.birth_date = birth_date
+
+            // Edit age
+            const newAge = calculateAge.takeAge(birth_date)
+
+            user.age = newAge
+
+            // Check if user is 18 ao older
+            const { requestPassword, message } = await checkAgeAndRequestPassword(newAge)
+
+            // Edit cell_phone
+            user.cell_phone = cell_phone
+
+            // Edit password
+            // Check password and confirmpassword
+            if(password !== confirm_password) {
+                res.status(422).json({message: 'O campo confirmar senha deve ser igual ao campo senha!'})
+
+                return
+            }
+        
+            // Create password
+            const salt = await bcrypt.genSalt(12)
+            const passwordHash = await bcrypt.hash(password, salt)
+
+            user.password = passwordHash
+
+            // Create password18
+            let password18Hash = null
+
+            if (requestPassword) {
+                if(!password_18) {
+                    // Check password18 and confirmpassword18
+                    if(password_18 !== confirm_password_18) {
+                        res.status(422).json({message: 'O campo confirmar senha deve ser igual ao campo senha!'})
+ 
+                        return
+                    }
+            
+                    // Create password 18
+                    const salt = await bcrypt.genSalt(12)
+                    password18Hash = await bcrypt.hash(password_18, salt)
+
+                    user.password_18 = password18Hash
+                }
+            }
+
+            // Save the updated user to the database
+            await user.save()
+        } catch(error) {
+            req.status(500).json({ message: error.message })
+        }
     }
 }

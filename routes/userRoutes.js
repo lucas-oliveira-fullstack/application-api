@@ -5,6 +5,7 @@ const UserController = require('../controllers/UserController')
 
 // Middleware
 const { imageUpload } = require('../helpers/image-upload')
+const verifyToken = require('../helpers/check-token')
 
 router.post('/personal-data', UserController.personalData)
 router.post('/create-send-code', UserController.createSendCode)
@@ -18,5 +19,6 @@ router.patch('/reset-password', UserController.resetPasswordByEmail)
 router.patch('/reset-password', UserController.resetPasswordByCell)
 router.get('/check-user', UserController.checkUser)
 router.get('/:id', UserController.getUserById)
+router.patch('/edit/:id', verifyToken, imageUpload.single('photo'), UserController.editUser)
 
 module.exports = router
