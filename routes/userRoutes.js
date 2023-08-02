@@ -15,10 +15,11 @@ router.post('/address', UserController.address)
 router.post('/register', UserController.register)
 router.post('/login-email', UserController.loginByEmail)
 router.post('/login-cell', UserController.loginByCell)
-router.patch('/reset-password', UserController.resetPasswordByEmail)
-router.patch('/reset-password', UserController.resetPasswordByCell)
+router.patch('/reset-password-email', UserController.resetPasswordByEmail)
+router.patch('/reset-password-cell', UserController.resetPasswordByCell)
 router.get('/check-user', UserController.checkUser)
 router.get('/:id', UserController.getUserById)
 router.patch('/edit/:id', verifyToken, imageUpload.single('photo'), UserController.editUser)
+router.delete('/delete', verifyToken, UserController.deleteUser)
 
 module.exports = router

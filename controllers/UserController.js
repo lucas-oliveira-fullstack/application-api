@@ -466,4 +466,30 @@ module.exports = class UserController {
             req.status(500).json({ message: error.message })
         }
     }
+
+    static async deleteUser(req, res) {
+        try {
+            const token = getToken(req)
+
+            // Get user by token
+            const user = await getUserByToken(token)
+
+            // Check if user exists
+            if(!user) {
+                res.status(404).json({ message: 'Usuário não encontrado!' })
+
+                return
+            }
+
+            // Delete user
+            await user.destroy()
+
+            // Remove user token
+            delete user.token
+
+            res.status(200).json({ message: 'Usuário removido com sucesso!' })
+        } catch(error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
 }
