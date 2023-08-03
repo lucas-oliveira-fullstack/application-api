@@ -8,10 +8,11 @@ const conn = require('./db/conn')
 
 //Import models
 const User = require('./models/User')
-const UserRules = require('./models/UserRule')
+const Market = require('./models/Market')
 
 //Import routes
 const userRoutes = require('./routes/userRoutes')
+const markerRoutes = require('./routes/marketRoutes')
 
 //Config JSON response
 app.use(express.json())
@@ -24,6 +25,7 @@ app.use(express.static('public'))
 
 //Routes
 app.use('/users', userRoutes)
+app.use('/markets', markerRoutes)
 
 const startServer = async () => {
     try {
