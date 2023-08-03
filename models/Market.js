@@ -10,9 +10,13 @@ const Market = sequelize.define('Market', {
     logo: {
         type: DataTypes.BLOB,
         allowNull: true,
-        defaultValue: true
+        defaultValue: null
     },
-    name: {
+    registered_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    cnpj: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -27,12 +31,12 @@ const Market = sequelize.define('Market', {
     open_close_saturday: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: true
+        defaultValue: null
     },
     open_close_sunday_holiday: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: true
+        defaultValue: null
     },
     postal_code: {
         type: DataTypes.STRING,
@@ -49,7 +53,7 @@ const Market = sequelize.define('Market', {
     complement: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: true
+        defaultValue: null
     },
     neighborhood: {
         type: DataTypes.STRING,
