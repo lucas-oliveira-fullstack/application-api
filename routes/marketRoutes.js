@@ -16,5 +16,6 @@ router.patch(
     imageUpload.single('logo'),
     MarketController.editMarket
 )
+router.delete('/delete', verifyToken, MarketController.deleteMarket)
 
 module.exports = router

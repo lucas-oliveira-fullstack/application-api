@@ -191,4 +191,30 @@ module.exports = class MarketController {
             res.status(500).json({ message: error })
         }
     }
+
+    static async deleteMarket(req, res) {
+        try {
+            const token = getToken(req)
+
+            // Get market by token
+            const market = await this.getMarketById(token)
+
+            // Check if market exists
+            if(!market) {
+                res.status(404).json({ message: 'Supermercado não encontrado!' })
+
+                return
+            }
+
+            // Delete market
+            await market.destroy()
+
+            // Remove market token
+            delete market.token
+
+            res.status(200).json({ message: 'Supermercado removido com sucesso!' })
+        } catch(error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
 }
