@@ -181,11 +181,11 @@ module.exports = class MarketController {
 
         try {
             // Returns updated data
-            const updatedMarket = await Market.update()
+            market = await Market.update()
 
             res.json({
                 message: 'Supermercado atualizado com sucesso!',
-                data: updatedMarket,
+                data: market,
             })
         } catch(error) {
             res.status(500).json({ message: error })
