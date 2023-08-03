@@ -19,14 +19,6 @@ const UserRule = sequelize.define('UserRule', {
         type: DataTypes.TINYINT,
         allowNull: false
     },
-    validation_cod: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    cod_validity: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     offers_notify: {
         type: DataTypes.TINYINT,
         allowNull: false

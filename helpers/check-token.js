@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 // middleware to validate token
-const checkToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"]
   
   const token = authHeader && authHeader.split(" ")[1]
@@ -19,4 +19,4 @@ const checkToken = (req, res, next) => {
   }
 }
 
-module.exports = { checkToken }
+module.exports = { verifyToken }
