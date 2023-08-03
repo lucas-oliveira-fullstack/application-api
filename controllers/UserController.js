@@ -12,6 +12,7 @@ const createUserToken = require('../helpers/create-user-token')
 const getToken = require('../helpers/get-token')
 const getUserByToken = require('../helpers/get-user-by-token')
 const checkAgeAndRequestPassword = require('../helpers/check-age-password')
+const { use } = require('../routes/marketRoutes')
 
 module.exports = class UserController {
 
@@ -408,6 +409,7 @@ module.exports = class UserController {
             if (req.file) {
                 profileImage = req.file.filename
             }
+            user.photo = photo
 
             // Edit user name
             user.name = name

@@ -5,10 +5,16 @@ const MarketController = require('../controllers/MarketController')
 
 // Middleware
 const { imageUpload } = require('../helpers/image-upload')
+const { verify } = require('jsonwebtoken')
 
-router.post(
-    '/register',
+router.post('/register', imageUpload.single('logo'), MarketController.register)
+router.get('/:id', MarketController.checkMarket)
+router.get('/check-market', MarketController.getMarketById)
+router.patch(
+    '/edit/:id',
+    verifyToken,
     imageUpload.single('logo'),
-    MarketController.register)
+    MarketController.editMarket
+)
 
-    module.exports = router
+module.exports = router
