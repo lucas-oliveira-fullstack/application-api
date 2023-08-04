@@ -8,11 +8,9 @@ const conn = require('./db/conn')
 
 //Import models
 const User = require('./models/User')
-const Market = require('./models/Market')
 
 //Import routes
 const userRoutes = require('./routes/userRoutes')
-const markerRoutes = require('./routes/marketRoutes')
 
 //Config JSON response
 app.use(express.json())
@@ -25,13 +23,12 @@ app.use(express.static('public'))
 
 //Routes
 app.use('/users', userRoutes)
-app.use('/markets', markerRoutes)
 
 const startServer = async () => {
     try {
         // Synchronize model with database an create table
-        await conn.sync({ force: true })
-        // await conn.sync()
+        //await conn.sync({ force: true })
+        await conn.sync()
 
         // Start server after synchronizing models
         app.listen(5001, () => {

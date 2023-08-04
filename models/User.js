@@ -36,8 +36,8 @@ const User = sequelize.define('User', {
         type: DataTypes.TINYINT,
         allowNull: false
     },
-    photo: {
-        type: DataTypes.BLOB,
+    profile_image: {
+        type: DataTypes.STRING,
         allowNull: true,
         defaultValue: null
     },

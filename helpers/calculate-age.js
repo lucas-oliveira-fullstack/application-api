@@ -1,17 +1,11 @@
-const { parse, differenceInYears, format } = require('date-fns')
+const moment = require('moment')
 
-function takeAge(birth_date) {
-    const birthDate = parse(birth_date, 'dd/MM/yyyy', new Date())
-    const currentDate = new Date()
-    const newAge = differenceInYears(currentDate, birthDate)
-    return newAge
+module.exports = {
+    calculateAge: (birth_date) => {
+        const today = moment()
+        const birthDateMoment = (birth_date)
+        const age = today.diff(birthDateMoment, 'years')
+
+        return age
+    }
 }
-
-try {
-    //Format birth_dat to ISO 8601
-    const formatteBirthDate = format(parse(birth_date, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd')
-} catch {
-
-}
-
-module.exports = { takeAge }
