@@ -8,6 +8,7 @@ const createUserToken = require('../helpers/create-user-token')
 const dateFormat = require('../helpers/date-format')
 const takeAge = require('../helpers/calculate-age')
 const addressInfoByCEP = require('../helpers/addres-info')
+const { use } = require('../routes/userRoutes')
 
 module.exports = class UserController {
     static async register(req, res) {
@@ -27,64 +28,11 @@ module.exports = class UserController {
         } = req.body
 
         // Check required inputs
-        if(!email) {
-            res.status(422).json({ message: 'E-mail é obrigatórios!' })
-            
-            return
-        }
-
-        if(!name) {
-            res.status(422).json({ message: 'Nome é obrigatórios!' })
-            
-            return
-        }
-
-        if(!cell_phone) {
-            res.status(422).json({ message: 'Celular é obrigatórios!' })
-            
-            return
-        }
-
-        if(!birth_date) {
-            res.status(422).json({ message: 'Data de nascimento é obrigatórios!' })
-            
-            return
-        }
-
-        if(!gender) {
-            res.status(422).json({ message: 'Genero é obrigatórios!' })
-            
-            return
-        }
-
-        if(!postal_code) {
-            res.status(422).json({ message: 'CEP é obrigatórios!' })
-            
-            return
-        }
-
-        if(!house_number) {
-            res.status(422).json({ message: 'Nº da casa é obrigatórios!' })
-            
-            return
-        }
-
-        if(!password) {
-            res.status(422).json({ message: 'Senha é obrigatórios!' })
+        if(!email || !name || !cell_phone  || !birth_date || !gender || !postal_code || !house_number || !password || !confirmpassword) {
+            res.status(422).json({ message: 'Favor preencher os campos obrigatórios!' })
 
             return
         }
-
-        if(!confirmpassword) {
-            res.status(422).json({ message: 'Confirmar senha é obrigatórios!' })
-            
-            return
-        }
-       // if(!email || !name || !cell_phone  || !birth_date || !gender || !postal_code || !house_number || !password || !confirmpassword) {
-       //     res.status(422).json({ message: 'Favor preencher os campos obrigatórios!' })
-
-         //   return
-        //}
 
         // Check if user exists
         const cpfExists = await User.findOne({ where: { cpf: cpf } })
@@ -110,7 +58,7 @@ module.exports = class UserController {
         }
         
         // Image file
-        let image
+        let image = ''
         if(req.file) {
             image = req.file.filename
         }
@@ -168,5 +116,42 @@ module.exports = class UserController {
             console.error(error)
             res.status(500).json({ message: error })
         }
+    }
+
+    static async login(req, res) {
+        const { email, password } = req.body
+        
+        // Check required inputs
+        if(!email) {
+            res.status(422).json({ message: 'E-mail é obrigatório!' })
+
+            return
+        }
+
+        if(!password) {
+            res.status(422).json({ message: 'Senha é obrigatória!' })
+
+            return
+        }
+        
+        // Check if user exists
+        const user = await User.findOne({ where: { email: email } })
+
+        if(!user) {
+            res.status(422).json({ message: 'Não há usuário cadastrado com este e-mail!' })
+
+            return
+        }
+
+        // Check if password match
+        const checkPassword = await bcrypt.compare(password, user.password)
+
+        if(!checkPassword) {
+            res.status(422).json({ message: 'Senha inválida!' })
+
+            return   
+        }
+
+        await createUserToken.createUserToken(user, req, res)
     }
 }
