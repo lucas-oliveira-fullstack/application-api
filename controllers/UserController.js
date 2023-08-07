@@ -8,7 +8,7 @@ const createUserToken = require('../helpers/create-user-token')
 const dateFormat = require('../helpers/date-format')
 const takeAge = require('../helpers/calculate-age')
 const addressInfoByCEP = require('../helpers/addres-info')
-const { use } = require('../routes/userRoutes')
+const userToken = require('../helpers/get-token')
 
 module.exports = class UserController {
     static async register(req, res) {
@@ -111,7 +111,7 @@ module.exports = class UserController {
 
             await User.create(user)
 
-            await createUserToken.createUserToken(user, req, res)
+            res.status(200).json({ message: 'Usuário cadastrado com sucesso!' })
         } catch(error) {
             console.error(error)
             res.status(500).json({ message: error })
@@ -153,5 +153,33 @@ module.exports = class UserController {
         }
 
         await createUserToken.createUserToken(user, req, res)
+    }
+
+    static async checkUser(req, res) {
+        try {
+            if(req.headers.authorization) {
+                const token = userToken.getToken(req)
+
+                if(!token) {
+                    return res.status(401).json({ message: 'Token não fornecido!' })
+                }
+
+                const decoded = jwt.verify(token, 'usersecret')
+
+                const currentUser = await User.findByPk(decoded.id, {
+                    attributes: { exclude: ['password', 'password_18'] }
+                })
+
+                if(!currentUser) {
+                    return res.status(404).json({ message: 'Usuário não encontrado!' })
+                }
+
+                return res.status(200).json(currentUser)
+            } else {
+                return res.status(404).json({ message: 'Token não fornecido!' })
+            }
+        } catch(error) {
+            return res.status(500).json({ message: 'Erro ao verificar usuário!' })
+        }
     }
 }

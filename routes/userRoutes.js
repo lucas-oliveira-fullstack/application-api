@@ -11,5 +11,6 @@ router.post(
     UserController.register
    )
 router.post('/login', UserController.login)
+router.get('/check-user', UserController.checkUser)
 
 module.exports = router
