@@ -64,15 +64,8 @@ module.exports = class UserController {
             image = req.file.filename
         }
 
-        // Check password and confirm password
-        if(password && !confirmpassword) {
-            res.status(422).json({ message: 'A confirmção de senha é obrigatória!' })
-
-            return
-        }
-
         if(password !== confirmpassword){
-            res.status(422).json({ message: 'A senha e confirmção de senha precisam ser iguais!' })
+            res.status(422).json({ message: 'A senha e confirmação de senha precisam ser iguais!' })
 
             return
         }
@@ -211,24 +204,10 @@ module.exports = class UserController {
             name,
             birth_date,
             cell_phone,
+            currentPassword,
             password,
             confirmpassword,
         } = req.body
-       
-        
-        // Check if confirm password exists
-        if(password && !confirmpassword) {
-            res.status(422).json({ message: 'A confirmção de senha é obrigatória!' })
-
-            return
-        }
-
-        // Check if password is = confirm password
-        if(password !== confirmpassword){
-            res.status(422).json({ message: 'A senha e confirmção de senha precisam ser iguais!' })
-
-            return
-        }
         
         // Edit name
         if(name) {
@@ -261,6 +240,35 @@ module.exports = class UserController {
 
         // Edit password
         if(password) {
+            // Check if  current password exists
+            if(!currentPassword) {
+                res.status(422).json({ message: 'Para editar a sua senha você precisa informar sua senha atual!' })
+            }
+
+            // Check if password match
+            const checkPassword = await bcrypt.compare(currentPassword, user.password)
+
+            if(!checkPassword) {
+                res.status(422).json({ message: 'Senha atual é inválida!' })
+
+                return   
+            }
+
+            // Check if confirm password exists
+            if(password && !confirmpassword) {
+                res.status(422).json({ message: 'A confirmação de senha é obrigatória!' })
+
+                return
+            }
+
+            // Check if password is = confirm password
+            if(password !== confirmpassword){
+                res.status(422).json({ message: 'A senha e confirmação de senha precisam ser iguais!' })
+
+                return
+            }
+
+            // Create new password
             const salt = await bcrypt.genSalt(12)
             const passwordHash = await bcrypt.hash(password, salt)
             
