@@ -10,7 +10,6 @@ const takeAge = require('../helpers/calculate-age')
 const addressInfoByCEP = require('../helpers/addres-info')
 const userToken = require('../helpers/get-token')
 const userByToken = require('../helpers/get-user-by-token')
-const { id } = require('date-fns/locale')
 
 module.exports = class UserController {
     static async register(req, res) {
@@ -195,13 +194,11 @@ module.exports = class UserController {
     }
 
     static async edit(req, res) {
-        const id = req.params.id
-
-        // Get user
-        const user = await User.findByPk(id)
-
         // Get token
         const token = userToken.getToken(req)
+        
+        // Get user by token
+        const user = await userByToken.getUserByToken(token)
 
         // Check if user exists
         if(!user) {
