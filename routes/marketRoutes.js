@@ -12,6 +12,7 @@ router.post(
     MarketController.register
    )
 router.get('/:id', MarketController.getMarketById)  
-router.patch('/edit/:id', MarketController.edit) 
+router.patch('/edit/:id', MarketController.edit)
+router.delete('/delete/:id', MarketController.delete)
 
 module.exports = router

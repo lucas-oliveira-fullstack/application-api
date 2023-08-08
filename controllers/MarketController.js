@@ -185,4 +185,26 @@ module.exports = class MarketController {
             res.status(500).json({ message: 'Erro ao atualizar usuário!' })
         }
     }
+
+    static async delete(req, res) {
+        const id = req.params.id
+
+        try {
+            // Get market by id
+            const market = await Market.findByPk(id)
+
+            // Check if market exists
+            if(!market) {
+                res.status(422).json({ message: 'Supermercado não encontrado!' })
+
+                return
+            }
+
+            await market.destroy()
+
+            res.status(200).json({ message: 'Supermercado removido com sucesso' })
+        } catch(error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
 }
