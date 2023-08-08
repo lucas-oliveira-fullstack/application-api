@@ -286,4 +286,25 @@ module.exports = class UserController {
             res.status(500).json({ message: 'Erro ao atualizar usuário!' })
         }
     }
+
+    static async delete(req, res) {
+        try {
+            // Get token
+            const token = userToken.getToken(req)
+
+            // Get user by token
+            const user = await userByToken.getUserByToken(token)
+
+            // Check if user exists
+            if(!user) {
+                res.status(404).json({ message: 'Usuário não encontrado!' })
+            }
+
+            await user.destroy()
+
+            res.status(200).json({ message: 'Usuário removido com sucesso!' })
+        } catch(error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
 }

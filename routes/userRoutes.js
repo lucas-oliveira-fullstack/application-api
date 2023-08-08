@@ -15,5 +15,6 @@ router.post('/login', UserController.login)
 router.get('/check-user', UserController.checkUser)
 router.get('/:id', UserController.getUserById)
 router.patch('/edit/:id', checkToken.verifyToken,UserController.edit)
+router.delete('/delete/:id', checkToken.verifyToken, UserController.delete)
 
 module.exports = router
