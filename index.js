@@ -10,12 +10,13 @@ const conn = require('./db/conn')
 const User = require('./models/User')
 const Market = require('./models/Market')
 const StoreUser = require('./models/StoreUser')
-const StorePermission = require('./models/StorePermissions')
-const StoreUserPermission = require('./models/StoreUserPermissions')
+//const StorePermission = require('./models/StorePermissions')
+//const StoreUserPermission = require('./models/StoreUserPermissions')
 
 //Import routes
 const userRoutes = require('./routes/userRoutes')
 const marketRoutes = require('./routes/marketRoutes')
+const marketPanelRoutes = require('./routes/marketpanelRoutes')
 
 //Config JSON response
 app.use(express.json())
@@ -29,11 +30,12 @@ app.use(express.static('public'))
 //Routes
 app.use('/users', userRoutes)
 app.use('/markets', marketRoutes)
+app.use('/markets-panel', marketPanelRoutes)
 
 const startServer = async () => {
     try {
         // Synchronize model with database an create table
-        await conn.sync({ force: true })
+        //await conn.sync({ force: true })
         //await conn.sync()
 
         // Start server after synchronizing models

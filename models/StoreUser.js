@@ -34,20 +34,17 @@ AutoPart.hasMany(StoreUser, {
     allowNull: true,
     defaultValue: null
 })
-StoreUser.belongsTo(AutoPart)
 
 Market.hasMany(StoreUser, {
     foreignKey: 'marketID',
     allowNull: true,
     defaultValue: null
 })
-StoreUser.belongsTo(Market)
 
 Pharmacy.hasMany(StoreUser, {
     foreignKey: 'pharmacyID',
     allowNull: true,
     defaultValue: null
 })
-StoreUser.belongsTo(AutoPart)
 
 module.exports = StoreUser
