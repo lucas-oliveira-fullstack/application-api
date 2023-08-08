@@ -13,8 +13,10 @@ module.exports = class MarketController {
         const {
             logo,
             registered_name,
+            fantasy_name,
             cnpj,
             phone_number,
+            cell_number,
             open_close_monday_friday,
             open_close_saturday,
             open_close_sunday_holiday,
@@ -48,17 +50,19 @@ module.exports = class MarketController {
             // Address info
             const addressInfo = await addressInfoByCEP.getAddressInfoByCEP(postal_code)
 
-            const newStreetName = addressInfo.logadouro
+            const newStreetName = addressInfo.logradouro
             const newNeighborhood = addressInfo.bairro
             const newCity = addressInfo.localidade
             const newState = addressInfo.uf
 
             // Create market
-            const market = new Market({
+            const market = {
                 logo,
                 registered_name,
+                fantasy_name,
                 cnpj,
                 phone_number,
+                cell_number,
                 open_close_monday_friday,
                 open_close_saturday,
                 open_close_sunday_holiday,
@@ -69,11 +73,11 @@ module.exports = class MarketController {
                 neighborhood: newNeighborhood,
                 city: newCity,
                 state: newState
-            })
+            }
 
-            const newMarket = await market.save()
+            await Market.create(market)
 
-            await createMarketToken(newMarket, req, res)
+            res.status(200).json({ message: 'Supermerdado criado com sucesso', market })
         } catch(error) {
             res.status(500).json({ message: error })
         }
@@ -208,9 +212,6 @@ module.exports = class MarketController {
 
             // Delete market
             await market.destroy()
-
-            // Remove market token
-            delete market.token
 
             res.status(200).json({ message: 'Supermercado removido com sucesso!' })
         } catch(error) {

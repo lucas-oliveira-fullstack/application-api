@@ -16,6 +16,10 @@ const Market = sequelize.define('Market', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    fantasy_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     cnpj: {
         type: DataTypes.STRING,
         allowNull: false
@@ -23,6 +27,11 @@ const Market = sequelize.define('Market', {
     phone_number: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    cell_number: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null
     },
     open_close_monday_friday: {
         type: DataTypes.STRING,
