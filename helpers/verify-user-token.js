@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-
 // middleware to validate token
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization']
@@ -9,11 +8,11 @@ const verifyToken = (req, res, next) => {
   if (!token) return res.status(401).json({ message: 'Acesso negado!' })
 
   try {
-    const verified = jwt.verify(token, 'nossosecret')
+    const verified = jwt.verify(token, 'usersecret')
    
     req.user = verified
   
-    next() // to continue the flow
+    next()
   } catch (err) {
     res.status(400).json({ message: 'O Token é inválido!' })
   }

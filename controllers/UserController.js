@@ -9,6 +9,8 @@ const dateFormat = require('../helpers/date-format')
 const takeAge = require('../helpers/calculate-age')
 const addressInfoByCEP = require('../helpers/addres-info')
 const userToken = require('../helpers/get-token')
+const userByToken = require('../helpers/get-user-by-token')
+const { id } = require('date-fns/locale')
 
 module.exports = class UserController {
     static async register(req, res) {
@@ -64,6 +66,12 @@ module.exports = class UserController {
         }
 
         // Check password and confirm password
+        if(password && !confirmpassword) {
+            res.status(422).json({ message: 'A confirmção de senha é obrigatória!' })
+
+            return
+        }
+
         if(password !== confirmpassword){
             res.status(422).json({ message: 'A senha e confirmção de senha precisam ser iguais!' })
 
@@ -113,7 +121,6 @@ module.exports = class UserController {
 
             res.status(200).json({ message: 'Usuário cadastrado com sucesso!' })
         } catch(error) {
-            console.error(error)
             res.status(500).json({ message: error })
         }
     }
@@ -180,6 +187,98 @@ module.exports = class UserController {
             }
         } catch(error) {
             return res.status(500).json({ message: 'Erro ao verificar usuário!' })
+        }
+    }
+
+    static async getUserById(req, res) {
+        
+    }
+
+    static async edit(req, res) {
+        const id = req.params.id
+
+        // Get user
+        const user = await User.findByPk(id)
+
+        // Get token
+        const token = userToken.getToken(req)
+
+        // Check if user exists
+        if(!user) {
+            res.status(404).json({ message: 'Usuário não encontrado!' })
+
+            return
+        }
+
+        const {
+            name,
+            birth_date,
+            cell_phone,
+            password,
+            confirmpassword,
+        } = req.body
+       
+        
+        // Check if confirm password exists
+        if(password && !confirmpassword) {
+            res.status(422).json({ message: 'A confirmção de senha é obrigatória!' })
+
+            return
+        }
+
+        // Check if password is = confirm password
+        if(password !== confirmpassword){
+            res.status(422).json({ message: 'A senha e confirmção de senha precisam ser iguais!' })
+
+            return
+        }
+        
+        // Edit name
+        if(name) {
+            user.name = name
+        }
+
+        // Edit birth date
+        if(birth_date) {
+            // Format birth date
+            const newBirthDate = dateFormat.formatDate(birth_date)
+
+            // Calculate age
+            const newAge = takeAge.calculateAge(newBirthDate)
+
+            user.birth_date = newBirthDate
+            user.age = newAge
+        }
+
+        // Edit cell phone
+        if(cell_phone) {
+            // Check if cell phone exists
+            if(user.cell_phone === cell_phone) {
+                res.status(422).json({ message: 'Celular já está cadastrado, por favor utilize outro!' })
+
+                return
+            }
+
+            user.cell_phone = cell_phone            
+        }
+
+        // Edit password
+        if(password) {
+            const salt = await bcrypt.genSalt(12)
+            const passwordHash = await bcrypt.hash(password, salt)
+            
+            user.password = passwordHash
+        }
+
+        console.log(user)
+
+        try {
+            await user.save()
+
+            res.status(200).json({ user })
+        } catch(error) {
+            console.error(error)
+            res.status(500).json({ message: 'Erro ao atualizar usuário!' })
         }
     }
 }
