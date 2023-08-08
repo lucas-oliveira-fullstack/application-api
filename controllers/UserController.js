@@ -64,7 +64,7 @@ module.exports = class UserController {
             image = req.file.filename
         }
 
-        if(password !== confirmpassword){
+        if(password !== confirmpassword) {
             res.status(422).json({ message: 'A senha e confirmação de senha precisam ser iguais!' })
 
             return
@@ -79,8 +79,6 @@ module.exports = class UserController {
         // Create password
         const salt = await bcrypt.genSalt(12)
         const passwordHash = await bcrypt.hash(password, salt)
-
-        
 
         try {
             // Address info by CEP

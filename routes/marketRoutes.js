@@ -11,5 +11,6 @@ router.post(
     imageUpload.single('logo'),
     MarketController.register
    )
+router.get('/:id', MarketController.getMarketById)   
 
 module.exports = router
