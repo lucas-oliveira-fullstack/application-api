@@ -83,6 +83,10 @@ module.exports = class MarketController {
         }
     }
 
+    static async login(req, res) {
+        
+    }
+
     static async checkMarket(req, res){
         let currentMarket
 
